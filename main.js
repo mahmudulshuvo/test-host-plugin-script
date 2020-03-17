@@ -5,6 +5,7 @@ var donateButton = document.createElement('BUTTON')
 
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
+// style.href = 'https://codepen.io/mahmudulshuvo/pen/LYVmyYj.css'
 style.href = 'style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
@@ -22,18 +23,22 @@ function designWidget(option) {
     fundraiserImage.style.borderTopLeftRadius = '15px'
     fundraiserImage.style.borderTopRightRadius = '15px'
     widgetDiv.style.height = '350px'
-    var blankDiv = document.createElement('DIV')
-    blankDiv.style.width = '100%'
+    // var blankDiv = document.createElement('DIV')
+    // blankDiv.style.width = '100%'
     widgetDiv.appendChild(fundraiserImage)
-    widgetDiv.appendChild(blankDiv)
+    // widgetDiv.appendChild(blankDiv)
+
+    var amountInfoDiv = document.createElement('div')
+    amountInfoDiv.id = 'amount-info-div-only-image'
+    widgetDiv.appendChild(amountInfoDiv)
 
     var receiveAmount = document.createElement('LABEL')
     receiveAmount.id = 'receive-amount'
-    widgetDiv.appendChild(receiveAmount)
+    amountInfoDiv.appendChild(receiveAmount)
 
     var targetAmount = document.createElement('LABEL')
     targetAmount.id = 'target-amount'
-    widgetDiv.appendChild(targetAmount)
+    amountInfoDiv.appendChild(targetAmount)
 
     var progressBar = document.createElement('DIV')
     progressBar.id = 'progress-bar'
@@ -59,7 +64,7 @@ function designWidget(option) {
     donateButton.innerHTML = 'Donate'
     donateButton.onclick = this.handleDonate
     widgetDiv.appendChild(donateButton)
-  } else if (option == 2) {
+  } else if (option === 2) {
     //create left side
     var donationForm = document.createElement('DIV')
     donationForm.id = 'donation-form'
@@ -67,6 +72,9 @@ function designWidget(option) {
     donationForm.style.width = '50%'
     donationForm.style.margin = '10px'
     // donationForm.style.backgroundColor = 'red'
+    widgetDiv.id = 'widget-with-form'
+    widgetDiv.style.backgroundColor = 'white'
+    widgetDiv.style.height = '290px !important'
     widgetDiv.appendChild(donationForm)
 
     widgetDiv.style.display = 'flex'
@@ -74,76 +82,79 @@ function designWidget(option) {
     widgetDiv.style.width = '800px'
 
     var labelDiv = document.createElement('div')
-    labelDiv.style.display = 'flex'
-    labelDiv.style.flexDirection = 'column'
+    labelDiv.id = 'block-div'
+    // labelDiv.style.display = 'flex'
+    // labelDiv.style.flexDirection = 'column'
     donationForm.appendChild(labelDiv)
 
-    var lable1 = document.createElement('label')
-    lable1.innerText = 'Secured Online Donation'
-    lable1.style.fontSize = '24px'
-    lable1.style.fontWeight = '600'
-    lable1.style.color = 'green'
-    labelDiv.appendChild(lable1)
+    var label1 = document.createElement('label')
+    label1.id = 'label1'
+    label1.innerText = 'Secured Online Donation'
+    labelDiv.appendChild(label1)
 
-    var lable2 = document.createElement('label')
-    lable2.innerText = 'Enter your donation'
-    lable2.style.fontSize = '20px'
-    lable2.style.fontWeight = '600'
-    labelDiv.appendChild(lable2)
+    var label2 = document.createElement('label')
+    label2.id = 'label2'
+    label2.innerText = 'Enter your donation'
+    labelDiv.appendChild(label2)
 
     var periodDiv = document.createElement('div')
-    periodDiv.style.display = 'flex'
-    periodDiv.style.flexDirection = 'row'
-    periodDiv.style.marginTop = '10px'
+    periodDiv.id = 'period-intervals'
+    donationForm.appendChild(periodDiv)
 
+    var periodOnetimeDiv = document.createElement('div')
+    periodOnetimeDiv.id = 'period-intervals-onetime'
     var oneTimeRadio = document.createElement('input')
     oneTimeRadio.setAttribute('type', 'radio')
     oneTimeRadio.name = 'period-intervals'
     oneTimeRadio.value = '1'
     oneTimeRadio.checked = true
     oneTimeRadio.onclick = () => this.handlePeriodInterval(1)
-
     var oneTimeLabel = document.createElement('label')
     oneTimeLabel.innerText = 'One time'
     oneTimeLabel.fontSize = '14px'
     oneTimeLabel.style.display = 'block'
+    oneTimeLabel.onclick = () => this.handlePeriodInterval(1)
+    periodOnetimeDiv.appendChild(oneTimeRadio)
+    periodOnetimeDiv.appendChild(oneTimeLabel)
+    periodDiv.appendChild(periodOnetimeDiv)
 
-    periodDiv.appendChild(oneTimeRadio)
-    periodDiv.appendChild(oneTimeLabel)
-    donationForm.appendChild(periodDiv)
-
+    var periodMonthlyDiv = document.createElement('div')
+    periodMonthlyDiv.id = 'period-intervals-monthly'
     var monthlyRadio = document.createElement('input')
     monthlyRadio.setAttribute('type', 'radio')
     monthlyRadio.name = 'period-intervals'
     monthlyRadio.value = '2'
+    monthlyRadio.checked = true
     monthlyRadio.onclick = () => this.handlePeriodInterval(2)
-
     var monthlyLabel = document.createElement('label')
     monthlyLabel.innerText = 'Monthly'
     monthlyLabel.fontSize = '14px'
     monthlyLabel.style.display = 'block'
+    monthlyLabel.onclick = () => this.handlePeriodInterval(2)
+    periodMonthlyDiv.appendChild(monthlyRadio)
+    periodMonthlyDiv.appendChild(monthlyLabel)
+    periodDiv.appendChild(periodMonthlyDiv)
 
-    periodDiv.appendChild(monthlyRadio)
-    periodDiv.appendChild(monthlyLabel)
-
+    var periodYearlyDiv = document.createElement('div')
+    periodYearlyDiv.id = 'period-intervals-yearly'
     var yearlyRadio = document.createElement('input')
     yearlyRadio.setAttribute('type', 'radio')
     yearlyRadio.name = 'period-intervals'
     yearlyRadio.value = '3'
+    yearlyRadio.checked = true
     yearlyRadio.onclick = () => this.handlePeriodInterval(3)
-
-    var yearlylabel = document.createElement('label')
-    yearlylabel.innerText = 'Yearly'
-    yearlylabel.fontSize = '14px'
-    yearlylabel.style.display = 'block'
-
-    periodDiv.appendChild(yearlyRadio)
-    periodDiv.appendChild(yearlylabel)
-    // donationForm.appendChild(periodDiv)
+    var yearlyLabel = document.createElement('label')
+    yearlyLabel.innerText = 'Yearly'
+    yearlyLabel.fontSize = '14px'
+    yearlyLabel.style.display = 'block'
+    yearlyLabel.onclick = () => this.handlePeriodInterval(3)
+    periodYearlyDiv.appendChild(yearlyRadio)
+    periodYearlyDiv.appendChild(yearlyLabel)
+    periodDiv.appendChild(periodYearlyDiv)
 
     var hrule = document.createElement('hr')
     hrule.style.background = '#72bcd4'
-    hrule.style.height = '1px'
+    hrule.style.height = '2px'
     hrule.style.display = 'flex'
     hrule.style.flexDirection = 'row'
     hrule.style.justifyContent = 'space-between'
@@ -151,30 +162,35 @@ function designWidget(option) {
 
     var oneTimeBar = document.createElement('div')
     oneTimeBar.id = 'onetime-bar'
-    oneTimeBar.style.height = '5px'
-    oneTimeBar.style.width = '50px'
-    oneTimeBar.style.background = 'red'
+    oneTimeBar.style.height = '2px'
+    oneTimeBar.style.width = '100px'
+    oneTimeBar.style.background = '#112FEB'
     hrule.appendChild(oneTimeBar)
 
     var monthlyBar = document.createElement('div')
     monthlyBar.id = 'monthly-bar'
-    monthlyBar.style.height = '5px'
-    monthlyBar.style.width = '50px'
+    monthlyBar.style.height = '2px'
+    monthlyBar.style.width = '100px'
     monthlyBar.style.background = '#72bcd4'
     hrule.appendChild(monthlyBar)
 
     var yearlyBar = document.createElement('div')
     yearlyBar.id = 'yearly-bar'
-    yearlyBar.style.height = '5px'
-    yearlyBar.style.width = '50px'
+    yearlyBar.style.height = '2px'
+    yearlyBar.style.width = '100px'
     yearlyBar.style.background = '#72bcd4'
     hrule.appendChild(yearlyBar)
 
+    var selectAmountLabelDiv = document.createElement('div')
+    selectAmountLabelDiv.id = 'select-amount-div'
+
     var selectAmountlabel = document.createElement('label')
+    selectAmountlabel.id = 'select-amount-label'
     selectAmountlabel.innerText = 'Select Amount'
     selectAmountlabel.style.fontSize = '14px'
     selectAmountlabel.fontWeight = '500'
-    donationForm.appendChild(selectAmountlabel)
+    selectAmountLabelDiv.appendChild(selectAmountlabel)
+    donationForm.appendChild(selectAmountLabelDiv)
 
     var amountDiv = document.createElement('div')
     amountDiv.style.display = 'flex'
@@ -184,6 +200,7 @@ function designWidget(option) {
     donationForm.appendChild(amountDiv)
 
     var firstAmount = document.createElement('div')
+    firstAmount.id = 'first-amount-div'
     firstAmount.style.display = 'flex'
     firstAmount.style.flexDirection = 'row'
     firstAmount.style.height = '45px'
@@ -199,11 +216,13 @@ function designWidget(option) {
     // firstAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var firstAmountLabel = document.createElement('label')
+    firstAmountLabel.id = 'first-amount-label'
     firstAmountLabel.innerText = '€25'
     firstAmountLabel.style.fontSize = '16px'
     firstAmountLabel.style.fontWeight = '500'
     firstAmountLabel.style.marginTop = '12px'
     firstAmountLabel.style.display = 'block'
+    firstAmountLabel.onclick = () => this.handleSelectAmount(25)
 
     firstAmount.appendChild(firstAmountRadio)
     firstAmount.appendChild(firstAmountLabel)
@@ -211,6 +230,7 @@ function designWidget(option) {
     amountDiv.appendChild(firstAmount)
 
     var secondAmount = document.createElement('div')
+    secondAmount.id = 'second-amount-div'
     secondAmount.style.height = '45px'
     secondAmount.style.width = '60px'
     secondAmount.style.borderRadius = '5px'
@@ -227,11 +247,13 @@ function designWidget(option) {
     // secondAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var secondAmountLabel = document.createElement('label')
+    secondAmountLabel.id = 'second-amount-label'
     secondAmountLabel.innerText = '€50'
     secondAmountLabel.style.fontSize = '16px'
     secondAmountLabel.style.fontWeight = '500'
     secondAmountLabel.style.marginTop = '12px'
     secondAmountLabel.style.display = 'block'
+    secondAmountLabel.onclick = () => this.handleSelectAmount(50)
 
     secondAmount.appendChild(secondAmountRadio)
     secondAmount.appendChild(secondAmountLabel)
@@ -239,6 +261,7 @@ function designWidget(option) {
     amountDiv.appendChild(secondAmount)
 
     var thirdAmount = document.createElement('div')
+    thirdAmount.id = 'third-amount-div'
     thirdAmount.style.height = '45px'
     thirdAmount.style.width = '60px'
     thirdAmount.style.borderRadius = '5px'
@@ -255,11 +278,13 @@ function designWidget(option) {
     // thirdAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var thirdAmountLable = document.createElement('label')
+    thirdAmountLable.id = 'third-amount-label'
     thirdAmountLable.innerText = '€75'
     thirdAmountLable.style.fontSize = '16px'
     thirdAmountLable.style.fontWeight = '500'
     thirdAmountLable.style.marginTop = '12px'
     thirdAmountLable.style.display = 'block'
+    thirdAmountLable.onclick = () => this.handleSelectAmount(75)
 
     thirdAmount.appendChild(thirdAmountRadio)
     thirdAmount.appendChild(thirdAmountLable)
@@ -267,6 +292,7 @@ function designWidget(option) {
     amountDiv.appendChild(thirdAmount)
 
     var forthAmount = document.createElement('div')
+    forthAmount.id = 'forth-amount-div'
     forthAmount.style.height = '45px'
     forthAmount.style.width = '60px'
     forthAmount.style.borderRadius = '5px'
@@ -283,11 +309,13 @@ function designWidget(option) {
     // forthAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var forthAmountLabel = document.createElement('label')
+    forthAmountLabel.id = 'forth-amount-label'
     forthAmountLabel.innerText = '€100'
     forthAmountLabel.style.fontSize = '16px'
     forthAmountLabel.style.fontWeight = '500'
     forthAmountLabel.style.marginTop = '12px'
     forthAmountLabel.style.display = 'block'
+    forthAmountLabel.onclick = () => this.handleSelectAmount(100)
 
     forthAmount.appendChild(forthAmountRadio)
     forthAmount.appendChild(forthAmountLabel)
@@ -295,6 +323,7 @@ function designWidget(option) {
     amountDiv.appendChild(forthAmount)
 
     var otherAmount = document.createElement('div')
+    otherAmount.id = 'other-amount-div'
     otherAmount.style.height = '45px'
     otherAmount.style.width = '60px'
     otherAmount.style.borderRadius = '5px'
@@ -310,27 +339,46 @@ function designWidget(option) {
     otherAmountRadio.style.marginTop = '15px'
     // otherAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
-    var otherAmountLable = document.createElement('label')
-    otherAmountLable.innerText = 'Other'
-    otherAmountLable.style.fontSize = '16px'
-    otherAmountLable.style.fontWeight = '500'
-    otherAmountLable.style.marginTop = '12px'
-    otherAmountLable.style.display = 'block'
-
+    var otherAmountLabel = document.createElement('label')
+    otherAmountLabel.id = 'other-amount-label'
+    otherAmountLabel.innerText = 'Other'
+    otherAmountLabel.style.fontSize = '16px'
+    otherAmountLabel.style.fontWeight = '500'
+    otherAmountLabel.style.marginTop = '12px'
+    otherAmountLabel.style.display = 'block'
+    otherAmountLabel.onclick = () => this.handleSelectAmount('other')
     otherAmount.appendChild(otherAmountRadio)
-    otherAmount.appendChild(otherAmountLable)
+    otherAmount.appendChild(otherAmountLabel)
 
     amountDiv.appendChild(otherAmount)
 
+    var otherAmountInputDiv = document.createElement('div')
+    otherAmountInputDiv.id = 'other-amount-input-div'
+
+    var otherAmountInput = document.createElement('input')
+    otherAmount.setAttribute('type', 'number')
+    otherAmountInput.placeholder = 'Input your amount'
+    otherAmountInput.id = 'other-amount-input'
+    otherAmountInputDiv.appendChild(otherAmountInput)
+    donationForm.appendChild(otherAmountInputDiv)
+
+    donateButton.id = 'donate-btn-in-form'
+    donateButton.innerHTML = 'Donate'
+    donateButton.onclick = this.handleDonate
+    donationForm.appendChild(donateButton)
+
     // create right side
     var fundraiserInfoDiv = document.createElement('DIV')
-    fundraiserInfoDiv.style.height = '100%'
-    fundraiserInfoDiv.style.width = '50%'
+    fundraiserInfoDiv.id = 'fundraiser-info-div'
+    // fundraiserInfoDiv.style.height = '100%'
+    // fundraiserInfoDiv.style.width = '50%'
+    // fundraiserInfoDiv.style.backgroundColor = 'rgb(248, 245, 245)'
+    // fundraiserInfoDiv.style.borderRadius = '10px'
     // fundraiserInfoDiv.style.margin = '10px'
 
     widgetDiv.appendChild(fundraiserInfoDiv)
 
-    var fundraiserImage = document.createElement('IMG')
+    fundraiserImage = document.createElement('IMG')
     fundraiserImage.id = 'fundraiser-image'
     fundraiserImage.style.height = '150px'
     fundraiserImage.style.width = '100%'
@@ -338,30 +386,48 @@ function designWidget(option) {
     fundraiserImage.style.borderTopLeftRadius = '15px'
     fundraiserImage.style.borderTopRightRadius = '15px'
     widgetDiv.style.height = '350px'
-    var blankDiv = document.createElement('DIV')
-    blankDiv.style.width = '100%'
+
+    // var blankDiv = document.createElement('DIV')
+    // blankDiv.id = 'blank-div'
+    // blankDiv.style.width = '100%'
     fundraiserInfoDiv.appendChild(fundraiserImage)
-    fundraiserInfoDiv.appendChild(blankDiv)
+    // fundraiserInfoDiv.appendChild(blankDiv)
+
+    var amountInfoDiv = document.createElement('div')
+    amountInfoDiv.id = 'amount-info-div'
 
     var receiveAmount = document.createElement('LABEL')
     receiveAmount.id = 'receive-amount'
-    fundraiserInfoDiv.appendChild(receiveAmount)
+    amountInfoDiv.appendChild(receiveAmount)
+    // fundraiserInfoDiv.appendChild(receiveAmount)
 
     var targetAmount = document.createElement('LABEL')
     targetAmount.id = 'target-amount'
-    fundraiserInfoDiv.appendChild(targetAmount)
+    amountInfoDiv.appendChild(targetAmount)
+    // fundraiserInfoDiv.appendChild(targetAmount)
+
+    fundraiserInfoDiv.appendChild(amountInfoDiv)
+
+    var progressBarDiv = document.createElement('div')
+    progressBarDiv.id = 'progress-bar-div'
 
     var progressBar = document.createElement('DIV')
     progressBar.id = 'progress-bar'
-    fundraiserInfoDiv.appendChild(progressBar)
+    progressBarDiv.appendChild(progressBar)
+    fundraiserInfoDiv.appendChild(progressBarDiv)
 
     var raisedBar = document.createElement('DIV')
     raisedBar.id = 'raised-bar'
     progressBar.appendChild(raisedBar)
 
-    var progressDiv = document.createElement('DIV')
+    var progressFormDiv = document.createElement('div')
+    progressFormDiv.id = 'progress-form-div'
+
+    progressDiv = document.createElement('DIV')
     progressDiv.id = 'prgoress-div'
-    fundraiserInfoDiv.appendChild(progressDiv)
+
+    progressFormDiv.appendChild(progressDiv)
+    fundraiserInfoDiv.appendChild(progressFormDiv)
 
     var raisedLabel = document.createElement('LABEL')
     raisedLabel.id = 'raised-label'
@@ -371,10 +437,15 @@ function designWidget(option) {
     daysLabel.id = 'remaining-days'
     progressDiv.appendChild(daysLabel)
 
-    donateButton.id = 'donate-btn'
-    donateButton.innerHTML = 'Donate'
-    donateButton.onclick = this.handleDonate
-    fundraiserInfoDiv.appendChild(donateButton)
+    var rightSideRule = document.createElement('div')
+    rightSideRule.id = 'right-side-rule'
+    progressFormDiv.appendChild(rightSideRule)
+    fundraiserInfoDiv.appendChild(progressFormDiv)
+
+    // donateButton.id = 'donate-btn'
+    // donateButton.innerHTML = 'Donate'
+    // donateButton.onclick = this.handleDonate
+    // fundraiserInfoDiv.appendChild(donateButton)
 
     // widgetDiv.appendChild(fundraiserImage)
     // widgetDiv.appendChild(blankDiv)
@@ -384,13 +455,17 @@ function designWidget(option) {
     blankDiv.style.width = '100%'
     widgetDiv.appendChild(blankDiv)
 
+    var amountInfoDiv = document.createElement('div')
+    amountInfoDiv.id = 'amount-info-div-only-image'
+    widgetDiv.appendChild(amountInfoDiv)
+
     var receiveAmount = document.createElement('LABEL')
     receiveAmount.id = 'receive-amount'
-    widgetDiv.appendChild(receiveAmount)
+    amountInfoDiv.appendChild(receiveAmount)
 
     var targetAmount = document.createElement('LABEL')
     targetAmount.id = 'target-amount'
-    widgetDiv.appendChild(targetAmount)
+    amountInfoDiv.appendChild(targetAmount)
 
     var progressBar = document.createElement('DIV')
     progressBar.id = 'progress-bar'
@@ -425,9 +500,9 @@ function handlePeriodInterval(value) {
   var monthlyBar = document.getElementById('monthly-bar')
   var yearlyBar = document.getElementById('yearly-bar')
 
-  onetimeBar.style.backgroundColor = 'red'
-  monthlyBar.style.backgroundColor = 'red'
-  yearlyBar.style.backgroundColor = 'red'
+  onetimeBar.style.backgroundColor = '#112FEB'
+  monthlyBar.style.backgroundColor = '#112FEB'
+  yearlyBar.style.backgroundColor = '#112FEB'
 
   if (value === 1) {
     monthlyBar.style.backgroundColor = '#72bcd4'
@@ -438,6 +513,135 @@ function handlePeriodInterval(value) {
   } else {
     onetimeBar.style.backgroundColor = '#72bcd4'
     monthlyBar.style.backgroundColor = '#72bcd4'
+  }
+}
+
+function handleSelectAmount(value) {
+  console.log(value)
+  var firstAmountdiv = document.getElementById('first-amount-div')
+  var secondAmountdiv = document.getElementById('second-amount-div')
+  var thirdAmountdiv = document.getElementById('third-amount-div')
+  var forthAmountdiv = document.getElementById('forth-amount-div')
+  var otherAmountdiv = document.getElementById('other-amount-div')
+
+  var firstAmountLabel = document.getElementById('first-amount-label')
+  var secondAmountLabel = document.getElementById('second-amount-label')
+  var thirdAmountLabel = document.getElementById('third-amount-label')
+  var forthAmountLabel = document.getElementById('forth-amount-label')
+  var otherAmountLabel = document.getElementById('other-amount-label')
+
+  var otherAmountDiv = document.getElementById('other-amount-input-div')
+
+  if (value === 25) {
+    otherAmountDiv.style.visibility = 'hidden'
+
+    firstAmountdiv.style.backgroundColor = 'green'
+    firstAmountdiv.style.color = 'white'
+    firstAmountLabel.style.color = 'white'
+
+    secondAmountdiv.style.backgroundColor = 'transparent'
+    secondAmountdiv.style.color = 'black'
+    secondAmountLabel.style.color = 'black'
+
+    thirdAmountdiv.style.backgroundColor = 'transparent'
+    thirdAmountdiv.style.color = 'black'
+    thirdAmountLabel.style.color = 'black'
+
+    forthAmountdiv.style.backgroundColor = 'transparent'
+    forthAmountdiv.style.color = 'black'
+    forthAmountLabel.style.color = 'black'
+
+    otherAmountdiv.style.backgroundColor = 'transparent'
+    otherAmountdiv.style.color = 'black'
+    otherAmountLabel.style.color = 'black'
+  } else if (value === 50) {
+    otherAmountDiv.style.visibility = 'hidden'
+
+    firstAmountdiv.style.backgroundColor = 'transparent'
+    firstAmountdiv.style.color = 'black'
+    firstAmountLabel.style.color = 'black'
+
+    secondAmountdiv.style.backgroundColor = 'green'
+    secondAmountdiv.style.color = 'white'
+    secondAmountLabel.style.color = 'white'
+
+    thirdAmountdiv.style.backgroundColor = 'transparent'
+    thirdAmountdiv.style.color = 'black'
+    thirdAmountLabel.style.color = 'black'
+
+    forthAmountdiv.style.backgroundColor = 'transparent'
+    forthAmountdiv.style.color = 'black'
+    forthAmountLabel.style.color = 'black'
+
+    otherAmountdiv.style.backgroundColor = 'transparent'
+    otherAmountdiv.style.color = 'black'
+    otherAmountLabel.style.color = 'black'
+  } else if (value === 75) {
+    otherAmountDiv.style.visibility = 'hidden'
+
+    firstAmountdiv.style.backgroundColor = 'transparent'
+    firstAmountdiv.style.color = 'black'
+    firstAmountLabel.style.color = 'black'
+
+    secondAmountdiv.style.backgroundColor = 'transparent'
+    secondAmountdiv.style.color = 'black'
+    secondAmountLabel.style.color = 'black'
+
+    thirdAmountdiv.style.backgroundColor = 'green'
+    thirdAmountdiv.style.color = 'white'
+    thirdAmountLabel.style.color = 'white'
+
+    forthAmountdiv.style.backgroundColor = 'transparent'
+    forthAmountdiv.style.color = 'black'
+    forthAmountLabel.style.color = 'black'
+
+    otherAmountdiv.style.backgroundColor = 'transparent'
+    otherAmountdiv.style.color = 'black'
+    otherAmountLabel.style.color = 'black'
+  } else if (value === 100) {
+    otherAmountDiv.style.visibility = 'hidden'
+
+    firstAmountdiv.style.backgroundColor = 'transparent'
+    firstAmountdiv.style.color = 'black'
+    firstAmountLabel.style.color = 'black'
+
+    secondAmountdiv.style.backgroundColor = 'transparent'
+    secondAmountdiv.style.color = 'black'
+    secondAmountLabel.style.color = 'black'
+
+    thirdAmountdiv.style.backgroundColor = 'transparent'
+    thirdAmountdiv.style.color = 'black'
+    thirdAmountLabel.style.color = 'black'
+
+    forthAmountdiv.style.backgroundColor = 'green'
+    forthAmountdiv.style.color = 'white'
+    forthAmountLabel.style.color = 'white'
+
+    otherAmountdiv.style.backgroundColor = 'transparent'
+    otherAmountdiv.style.color = 'black'
+    otherAmountLabel.style.color = 'black'
+  } else {
+    otherAmountDiv.style.visibility = 'visible'
+
+    firstAmountdiv.style.backgroundColor = 'transparent'
+    firstAmountdiv.style.color = 'black'
+    firstAmountLabel.style.color = 'black'
+
+    secondAmountdiv.style.backgroundColor = 'transparent'
+    secondAmountdiv.style.color = 'black'
+    secondAmountLabel.style.color = 'black'
+
+    thirdAmountdiv.style.backgroundColor = 'transparent'
+    thirdAmountdiv.style.color = 'black'
+    thirdAmountLabel.style.color = 'black'
+
+    forthAmountdiv.style.backgroundColor = 'transparent'
+    forthAmountdiv.style.color = 'black'
+    forthAmountLabel.style.color = 'black'
+
+    otherAmountdiv.style.backgroundColor = 'green'
+    otherAmountdiv.style.color = 'white'
+    otherAmountLabel.style.color = 'white'
   }
 }
 
@@ -468,16 +672,22 @@ function createModal() {
   formDiv.appendChild(fromLabel)
 }
 
-designWidget(2)
+// designWidget(3)
 createModal()
-setTimeout(addJquery, 300)
+setTimeout(enableJQuery, 300)
 
-function addJquery() {
-  var script = document.createElement('script')
-  script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
-  script.type = 'text/javascript'
-  script.onload = function() {
-    // your jQuery code here
+function enableJQuery() {
+  var widgetOption = widgetDiv.dataset.options
+  if (widgetOption === 'show-with-image') {
+    designWidget(1)
+  } else if (widgetOption === 'donation-widget') {
+    designWidget(3)
+  } else {
+    designWidget(2)
+  }
+
+  if (window.jQuery) {
+    console.log('jquey exists')
     jQuery(document).ready(function() {
       // console.log(widgetDiv.dataset.message)
       var url = makeUrl()
@@ -542,8 +752,88 @@ function addJquery() {
         },
       })
     })
+  } else {
+    console.log('jquey does not exists')
+    setTimeout(addJquery, 300)
+  }
+}
+
+function addJquery() {
+  var script = document.createElement('script')
+  script.src = 'https://code.jquery.com/jquery-1.7.2.js'
+  script.type = 'text/javascript'
+  script.onload = function() {
+    // your jQuery code here
+    jQuery(document).ready(function() {
+      // console.log(widgetDiv.dataset.message)
+      if (typeof jQuery.easing[jQuery.easing.def] == 'function') {
+        return jQuery.easing[jQuery.easing.def](x, t, b, c, d)
+      }
+      var url = makeUrl()
+      jQuery.ajax({
+        url: url,
+        beforeSend: function(xhr) {
+          console.log('before send')
+        },
+        success: function(result) {
+          console.log('response ', result)
+          testCheck()
+          var fundraiserImageView = document.getElementById('fundraiser-image')
+          if (fundraiserImageView) {
+            fundraiserImageView.src = result['data']['background']['image']
+          }
+
+          var targetAmount = document.getElementById('target-amount')
+          var receiveAmount = document.getElementById('receive-amount')
+          receiveAmount.innerText = '€' + result['data']['donation']['amount']
+          targetAmount.innerText = 'of €' + result['data']['amount_target']
+
+          var date1 = new Date() // current date
+          var date2 = new Date(result['data']['end_date']) // mm/dd/yyyy format
+          var timeDiff = Math.abs(date2.getTime() - date1.getTime()) // in miliseconds
+          var timeDiffInDays = Math.ceil(timeDiff / 1000 / 3600 / 24) // in second
+          var remainDaysLabel = document.getElementById('remaining-days')
+
+          if (timeDiffInDays <= 0) {
+            remainDaysLabel.innerText = 'closed'
+            var donateBtn = document.getElementById('donate-btn')
+            donateBtn.disabled = true
+            donateBtn.style.backgroundColor = 'gray'
+          } else {
+            remainDaysLabel.innerText = timeDiffInDays + ' day(s) left'
+          }
+
+          var progress =
+            (result['data']['donation']['amount'] /
+              result['data']['amount_target']) *
+            100
+
+          if (progress > 100) {
+            progress = 100
+            var raisedBar = document.getElementById('raised-bar')
+            raisedBar.style.width = '100%'
+          } else {
+            raisedBar = document.getElementById('raised-bar')
+            raisedBar.style.width = progress.toString() + '%'
+          }
+
+          var raisedLabel = document.getElementById('raised-label')
+          raisedLabel.innerText = progress + '% funded'
+        },
+        error: function(message) {
+          console.log('error message ', message)
+        },
+        complete: function() {
+          // hide loader here
+          console.log('completed block')
+          var modal = document.getElementById('myModal')
+          modal.style.display = 'none'
+        },
+      })
+    })
     // console.log(widgetDiv.dataset.message)
   }
+
   document.getElementsByTagName('head')[0].appendChild(script)
 }
 
@@ -554,37 +844,37 @@ function testCheck() {
 function handleDonate() {
   console.log('donate')
 
-  // Get the modal
-  var modal = document.getElementById('myModal')
+  // // Get the modal
+  // var modal = document.getElementById('myModal')
 
-  // // Get the button that opens the modal
-  // var btn = document.getElementById('myBtn')
+  // // // Get the button that opens the modal
+  // // var btn = document.getElementById('myBtn')
 
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName('close')[0]
+  // // Get the <span> element that closes the modal
+  // var span = document.getElementsByClassName('close')[0]
 
-  if (modal.style.display === 'block') {
-    modal.style.display = 'none'
-  } else {
-    modal.style.display = 'block'
-  }
-
-  // // When the user clicks the button, open the modal
-  // donateButton.onclick = function() {
+  // if (modal.style.display === 'block') {
+  //   modal.style.display = 'none'
+  // } else {
   //   modal.style.display = 'block'
   // }
 
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function() {
-    modal.style.display = 'none'
-  }
+  // // // When the user clicks the button, open the modal
+  // // donateButton.onclick = function() {
+  // //   modal.style.display = 'block'
+  // // }
 
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = 'none'
-    }
-  }
+  // // When the user clicks on <span> (x), close the modal
+  // span.onclick = function() {
+  //   modal.style.display = 'none'
+  // }
+
+  // // When the user clicks anywhere outside of the modal, close it
+  // window.onclick = function(event) {
+  //   if (event.target == modal) {
+  //     modal.style.display = 'none'
+  //   }
+  // }
 }
 
 var btn = document.createElement('BUTTON') // Create a <button> element
@@ -602,20 +892,6 @@ btnP.onclick = this.handlePOST
 var btnC = document.createElement('BUTTON') // Create a <button> element
 btnC.innerHTML = 'Check'
 btnC.id = 'btn-request'
-// btnP.onclick = this.handleClick
-// widgetDiv.appendChild(btnC)
-
-// function handleGET() {
-//   console.log(widgetDiv.dataset.message)
-//   var res = httpGet()
-//   console.log('response get ', res)
-// }
-
-// function handlePOST() {
-//   console.log(widgetDiv.dataset.message)
-//   var res = httpPost()
-//   console.log('response post ', res)
-// }
 
 function httpPost() {
   data = {
