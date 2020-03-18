@@ -1,4 +1,4 @@
-#widget {
+.widget {
   background-color: lightblue;
   height: 215px;
   width: 400px;
@@ -8,7 +8,7 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#widget-with-form {
+.widget-with-form {
   height: 400px !important;
   width: 800px !important;
   margin: 50px;
@@ -17,7 +17,7 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
 }
 
-#other-amount-input-div {
+.other-amount-input-div {
   display: flex;
   visibility: hidden;
   flex-grow: 1 !important;
@@ -26,7 +26,7 @@
   margin: auto !important;
 }
 
-#other-amount-input-div input {
+.other-amount-input-div input {
   font-size: 16px !important;
   font-weight: 500 !important;
   width: 100% !important;
@@ -37,11 +37,11 @@
   border-radius: 5px !important;
 }
 
-#other-amount-input-div input:focus {
+.other-amount-input-div input:focus {
   outline: none !important;
 }
 
-#fundraiser-info-div {
+.fundraiser-info-div {
   display: flex !important;
   flex-direction: column !important;
   height: 100% !important;
@@ -51,20 +51,20 @@
   /* background-color: rgb(90, 77, 60); */
 }
 
-#block-div {
+.block-div {
   display: flex !important;
   flex-direction: column !important;
   height: 60px !important;
 }
 
-#label1 {
+.label1 {
   height: 20px !important;
   font-size: 24px !important;
   font-weight: 600 !important;
   color: green !important;
 }
 
-#label2 {
+.label2 {
   height: 20px !important;
   font-size: 20px !important;
   font-weight: 600 !important;
@@ -73,7 +73,7 @@
   margin-bottom: 10px;
 }
 
-#period-intervals {
+.period-intervals {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -81,9 +81,9 @@
   margin-top: 10px;
 }
 
-#period-intervals-onetime,
-#period-intervals-monthly,
-#period-intervals-yearly {
+.period-intervals-onetime,
+.period-intervals-monthly,
+.period-intervals-yearly {
   display: flex;
   flex-grow: 1;
   text-align: center;
@@ -91,42 +91,42 @@
 /* #period-intervals-div {
   align-items: center;
 } */
-#period-intervals-onetime label,
-#period-intervals-monthly label,
-#period-intervals-yearly label {
+.period-intervals-onetime label,
+.period-intervals-monthly label,
+.period-intervals-yearly label {
   cursor: pointer;
 }
 
-#period-intervals-onetime input,
-#period-intervals-monthly input,
-#period-intervals-yearly input {
+.period-intervals-onetime input,
+.period-intervals-monthly input,
+.period-intervals-yearly input {
   visibility: hidden;
 }
 
-#select-amount-div {
+.select-amount-div {
   margin-top: 20px !important;
   margin-left: 5px !important;
   margin-bottom: 20px !important;
 }
 
-#first-amount-div input,
-#second-amount-div input,
-#third-amount-div input,
-#forth-amount-div input,
-#other-amount-div input {
+.first-amount-div input,
+.second-amount-div input,
+.third-amount-div input,
+.forth-amount-div input,
+.other-amount-div input {
   visibility: hidden;
 }
 
-#first-amount-div label,
-#second-amount-div label,
-#third-amount-div label,
-#forth-amount-div label,
-#other-amount-div label {
+.first-amount-div label,
+.second-amount-div label,
+.third-amount-div label,
+.forth-amount-div label,
+.other-amount-div label {
   cursor: pointer;
   margin-left: -5px;
 }
 
-#select-amount-div label {
+.select-amount-div label {
   font-weight: 600;
 }
 
@@ -136,7 +136,7 @@
   background-color: aqua;
 } */
 
-#fundraiser-image {
+.fundraiser-image {
   height: 150px;
   width: 100%;
   margin-bottom: 10px;
@@ -144,7 +144,7 @@
   border-top-right-radius: 15px;
 }
 
-#amount-info-div {
+.amount-info-div {
   display: flex !important;
   flex-direction: row !important;
   margin-top: 20px !important;
@@ -153,11 +153,11 @@
   vertical-align: bottom;
 }
 
-#amount-info-div-only-image {
+.amount-info-div-only-image {
   margin-top: 20px;
 }
 
-#receive-amount {
+.receive-amount {
   font-size: 35px;
   font-weight: 700;
   margin-left: 25px;
@@ -165,14 +165,14 @@
   vertical-align: bottom;
 }
 
-#target-amount {
+.target-amount {
   font-size: 25px;
   font-weight: 700;
   color: gray;
   vertical-align: bottom;
 }
 
-#progress-bar-div {
+.progress-bar-div {
   height: 15px !important;
   width: 100% !important;
   /* background-color: #68a0fa; */
@@ -180,7 +180,7 @@
   align-items: baseline;
 }
 
-#progress-bar {
+.progress-bar {
   height: 8px;
   margin: auto;
   margin-top: 10px;
@@ -190,14 +190,14 @@
   border-radius: 5px;
 }
 
-#raised-bar {
+.raised-bar {
   height: 8px;
   width: 10%;
   background: #089b19;
   border-radius: 5px;
 }
 
-#prgoress-div {
+.progress-div {
   height: 20px;
   margin: auto;
   margin-top: 5px;
@@ -206,7 +206,7 @@
   justify-content: space-between;
 }
 
-#progress-form-div {
+.progress-form-div {
   height: 50px;
   margin: auto;
   margin-top: 5px;
@@ -215,15 +215,15 @@
   flex-direction: column;
 }
 
-#raised-label {
+.raised-label {
   color: gray;
 }
 
-#remaining-days {
+.remaining-days {
   color: gray;
 }
 
-#donate-btn {
+.donate-btn {
   background-color: #2828d6;
   color: white;
   font-size: 16px;
@@ -236,7 +236,7 @@
   border-radius: 30px;
 }
 
-#donate-btn-in-form {
+.donate-btn-in-form {
   background-color: #2828d6 !important;
   color: white !important;
   font-size: 16px !important;
@@ -249,7 +249,7 @@
   border-radius: 30px !important;
 }
 
-#right-side-rule {
+.right-side-rule {
   background: #72bcd4;
   height: 1.5px;
   margin-top: 10px;
@@ -259,7 +259,7 @@ button:focus {
   outline: 0;
 }
 
-#donate-btn:hover {
+.donate-btn:hover {
   cursor: pointer;
   background-color: #68a0fa;
 }
