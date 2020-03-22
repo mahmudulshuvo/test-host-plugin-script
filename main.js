@@ -13,8 +13,8 @@ var widgetOption = ''
 
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
-style.href = 'https://codepen.io/mahmudulshuvo/pen/LYVmyYj.css'
-// style.href = 'style.css'
+// style.href = 'https://codepen.io/mahmudulshuvo/pen/LYVmyYj.css'
+style.href = 'style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -1889,6 +1889,12 @@ function createModal(slug) {
   otherAmountInputDiv.appendChild(otherAmountInput)
   donationFormDiv.appendChild(otherAmountInputDiv)
 
+  var missingAmountMsg = document.createElement('p')
+  missingAmountMsg.id = 'missing-error-msg-amount' + slug
+  missingAmountMsg.className = 'missing-error-msg'
+  missingAmountMsg.innerText = 'Please select or input an amount'
+  donationFormDiv.appendChild(missingAmountMsg)
+
   var donorInfoDiv = document.createElement('div')
   donorInfoDiv.id = 'donor-info-div-modal' + slug
   donorInfoDiv.className = 'donor-info-div-modal'
@@ -1900,6 +1906,12 @@ function createModal(slug) {
   firstNameInput.id = 'first-name-field' + slug
   firstNameInput.className = 'first-name-field'
   donorInfoDiv.appendChild(firstNameInput)
+
+  var missingFirstnameMsg = document.createElement('p')
+  missingFirstnameMsg.id = 'missing-error-msg-first-name' + slug
+  missingFirstnameMsg.className = 'missing-error-msg'
+  missingFirstnameMsg.innerText = 'Please enter your first name'
+  donorInfoDiv.appendChild(missingFirstnameMsg)
 
   var lastNameInput = document.createElement('input')
   lastNameInput.setAttribute('type', 'text')
@@ -2043,7 +2055,7 @@ function directDonate(idValue) {
     lang: 'en',
     description: 'Hey there, just want to help with donation',
     bank_account: '',
-    return_url: window.location.href,
+    return_url: 'https://www.google.com',
   }
 
   makeDonation(data)
@@ -2086,7 +2098,7 @@ function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
   const url =
     'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug
+    widgetDiv.dataset.slug.split('&')[0]
 
   console.log('options check ', widgetDiv.getAttribute('value'))
 
