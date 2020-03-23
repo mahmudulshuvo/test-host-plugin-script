@@ -13,11 +13,18 @@ var widgetOption = ''
 
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
-// style.href = 'https://codepen.io/mahmudulshuvo/pen/LYVmyYj.css'
-style.href = 'style.css'
+style.href = 'https://codepen.io/mahmudulshuvo/pen/LYVmyYj.css'
+// style.href = 'style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
+
+var fontAwesomeCss = document.createElement('link')
+fontAwesomeCss.href =
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+fontAwesomeCss.type = 'text/css'
+fontAwesomeCss.rel = 'stylesheet'
+head.appendChild(fontAwesomeCss)
 
 enableJQuery()
 
@@ -75,8 +82,13 @@ function enableJQuery() {
         var receiveAmount = document.getElementById(
           'receive-amount' + widgetDiv.dataset.slug,
         )
-        receiveAmount.innerText = '€' + result['data']['donation']['amount']
-        targetAmount.innerText = 'of €' + result['data']['amount_target']
+
+        if (result['data']['show_donation_details']) {
+          receiveAmount.innerText = '€' + result['data']['donation']['amount']
+          if (result['data']['amount_target'] > 0) {
+            targetAmount.innerText = 'of €' + result['data']['amount_target']
+          }
+        }
 
         var date1 = new Date() // current date
         var date2 = new Date(result['data']['end_date']) // mm/dd/yyyy format
@@ -93,32 +105,46 @@ function enableJQuery() {
           )
           donateBtn.disabled = true
           donateBtn.style.backgroundColor = 'gray'
+        } else if (timeDiffInDays > 1000) {
+          remainDaysLabel.innerText = ''
         } else {
           remainDaysLabel.innerText = timeDiffInDays + ' day(s) left'
         }
 
-        var progress =
-          (result['data']['donation']['amount'] /
-            result['data']['amount_target']) *
-          100
-
-        if (progress > 100) {
-          progress = 100
-          var raisedBar = document.getElementById(
-            'raised-bar' + widgetDiv.dataset.slug,
+        if (result['data']['amount_target'] === 0) {
+          var progressDiv = document.getElementById(
+            'progress-div' + widgetDiv.dataset.slug,
           )
-          raisedBar.style.width = '100%'
+          progressDiv.style.display = 'none'
         } else {
-          raisedBar = document.getElementById(
-            'raised-bar' + widgetDiv.dataset.slug,
+          var progressDiv = document.getElementById(
+            'progress-div' + widgetDiv.dataset.slug,
           )
-          raisedBar.style.width = progress.toString() + '%'
-        }
+          progressDiv.style.display = 'block'
+          var progress = Number(
+            (result['data']['donation']['amount'] /
+              result['data']['amount_target']) *
+              100,
+          ).toFixed(2)
 
-        var raisedLabel = document.getElementById(
-          'raised-label' + widgetDiv.dataset.slug,
-        )
-        raisedLabel.innerText = progress + '% funded'
+          if (progress > 100) {
+            progress = 100
+            var raisedBar = document.getElementById(
+              'raised-bar' + widgetDiv.dataset.slug,
+            )
+            raisedBar.style.width = '100%'
+          } else {
+            raisedBar = document.getElementById(
+              'raised-bar' + widgetDiv.dataset.slug,
+            )
+            raisedBar.style.width = progress.toString() + '%'
+          }
+
+          var raisedLabel = document.getElementById(
+            'raised-label' + widgetDiv.dataset.slug,
+          )
+          raisedLabel.innerText = progress + '% funded'
+        }
       },
       error: function(message) {
         console.log('error message ', message)
@@ -176,8 +202,13 @@ function addJquery() {
         var receiveAmount = document.getElementById(
           'receive-amount' + widgetDiv.dataset.slug,
         )
-        receiveAmount.innerText = '€' + result['data']['donation']['amount']
-        targetAmount.innerText = 'of €' + result['data']['amount_target']
+
+        if (result['data']['show_donation_details']) {
+          receiveAmount.innerText = '€' + result['data']['donation']['amount']
+          if (result['data']['amount_target'] > 0) {
+            targetAmount.innerText = 'of €' + result['data']['amount_target']
+          }
+        }
 
         var date1 = new Date() // current date
         var date2 = new Date(result['data']['end_date']) // mm/dd/yyyy format
@@ -194,32 +225,46 @@ function addJquery() {
           )
           donateBtn.disabled = true
           donateBtn.style.backgroundColor = 'gray'
+        } else if (timeDiffInDays > 1000) {
+          remainDaysLabel.innerText = ''
         } else {
           remainDaysLabel.innerText = timeDiffInDays + ' day(s) left'
         }
 
-        var progress =
-          (result['data']['donation']['amount'] /
-            result['data']['amount_target']) *
-          100
-
-        if (progress > 100) {
-          progress = 100
-          var raisedBar = document.getElementById(
-            'raised-bar' + widgetDiv.dataset.slug,
+        if (result['data']['amount_target'] === 0) {
+          var progressDiv = document.getElementById(
+            'progress-bar' + widgetDiv.dataset.slug,
           )
-          raisedBar.style.width = '100%'
+          progressDiv.style.display = 'none'
         } else {
-          raisedBar = document.getElementById(
-            'raised-bar' + widgetDiv.dataset.slug,
+          var progressDiv = document.getElementById(
+            'progress-bar' + widgetDiv.dataset.slug,
           )
-          raisedBar.style.width = progress.toString() + '%'
-        }
+          progressDiv.style.display = 'block'
+          var progress = Number(
+            (result['data']['donation']['amount'] /
+              result['data']['amount_target']) *
+              100,
+          ).toFixed(2)
 
-        var raisedLabel = document.getElementById(
-          'raised-label' + widgetDiv.dataset.slug,
-        )
-        raisedLabel.innerText = progress + '% funded'
+          if (progress > 100) {
+            progress = 100
+            var raisedBar = document.getElementById(
+              'raised-bar' + widgetDiv.dataset.slug,
+            )
+            raisedBar.style.width = '100%'
+          } else {
+            raisedBar = document.getElementById(
+              'raised-bar' + widgetDiv.dataset.slug,
+            )
+            raisedBar.style.width = progress.toString() + '%'
+          }
+
+          var raisedLabel = document.getElementById(
+            'raised-label' + widgetDiv.dataset.slug,
+          )
+          raisedLabel.innerText = progress + '% funded'
+        }
       },
       error: function(message) {
         console.log('error message ', message)
@@ -495,6 +540,8 @@ function designWidget(option) {
     firstAmount.style.width = '60px'
     firstAmount.style.borderRadius = '5px'
     firstAmount.style.border = '1px black solid'
+    firstAmount.style.backgroundColor = 'green'
+    firstAmount.style.color = 'white'
 
     var firstAmountRadio = document.createElement('input')
     firstAmountRadio.setAttribute('type', 'radio')
@@ -502,6 +549,7 @@ function designWidget(option) {
     firstAmountRadio.name = 'select-amount'
     firstAmountRadio.value = '25'
     firstAmountRadio.style.marginTop = '15px'
+    firstAmountRadio.style.checked = true
     // firstAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var firstAmountLabel = document.createElement('label')
@@ -670,6 +718,12 @@ function designWidget(option) {
     otherAmountInputDiv.appendChild(otherAmountInput)
     donationForm.appendChild(otherAmountInputDiv)
 
+    var missingAmountMsg = document.createElement('p')
+    missingAmountMsg.id = 'missing-error-msg-amount' + widgetDiv.dataset.slug
+    missingAmountMsg.className = 'missing-error-msg'
+    missingAmountMsg.innerText = 'Amount should be minimum €4'
+    donationForm.appendChild(missingAmountMsg)
+
     var donorInfoDiv = document.createElement('div')
     donorInfoDiv.id = 'donor-info-div' + widgetDiv.dataset.slug
     donorInfoDiv.className = 'donor-info-div'
@@ -682,6 +736,13 @@ function designWidget(option) {
     firstNameInput.className = 'first-name-field'
     donorInfoDiv.appendChild(firstNameInput)
 
+    var missingFirstNametMsg = document.createElement('p')
+    missingFirstNametMsg.id =
+      'missing-error-msg-first-name' + widgetDiv.dataset.slug
+    missingFirstNametMsg.className = 'missing-error-msg'
+    missingFirstNametMsg.innerText = 'Please enter your first name'
+    donorInfoDiv.appendChild(missingFirstNametMsg)
+
     var lastNameInput = document.createElement('input')
     lastNameInput.setAttribute('type', 'text')
     lastNameInput.placeholder = 'Last name'
@@ -689,12 +750,25 @@ function designWidget(option) {
     lastNameInput.className = 'last-name-field'
     donorInfoDiv.appendChild(lastNameInput)
 
+    var missingLastNameMsg = document.createElement('p')
+    missingLastNameMsg.id =
+      'missing-error-msg-last-name' + widgetDiv.dataset.slug
+    missingLastNameMsg.className = 'missing-error-msg'
+    missingLastNameMsg.innerText = 'Please enter your last name'
+    donorInfoDiv.appendChild(missingLastNameMsg)
+
     var emailInput = document.createElement('input')
     emailInput.setAttribute('type', 'text')
     emailInput.placeholder = 'Email'
     emailInput.id = 'email-field' + widgetDiv.dataset.slug
     emailInput.className = 'email-field'
     donorInfoDiv.appendChild(emailInput)
+
+    var missingEmailMsg = document.createElement('p')
+    missingEmailMsg.id = 'missing-error-msg-email' + widgetDiv.dataset.slug
+    missingEmailMsg.className = 'missing-error-msg'
+    missingEmailMsg.innerText = 'Please enter your email address'
+    donorInfoDiv.appendChild(missingEmailMsg)
 
     // ----------- copied from here -----------------------
 
@@ -991,6 +1065,8 @@ function designWidget(option) {
     firstAmount.style.width = '60px'
     firstAmount.style.borderRadius = '5px'
     firstAmount.style.border = '1px black solid'
+    firstAmount.style.backgroundColor = 'green'
+    firstAmount.style.color = 'white'
 
     var firstAmountRadio = document.createElement('input')
     firstAmountRadio.setAttribute('type', 'radio')
@@ -998,6 +1074,7 @@ function designWidget(option) {
     firstAmountRadio.name = 'select-amount'
     firstAmountRadio.value = '25'
     firstAmountRadio.style.marginTop = '15px'
+    firstAmountRadio.style.checked = true
     // firstAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var firstAmountLabel = document.createElement('label')
@@ -1166,6 +1243,12 @@ function designWidget(option) {
     otherAmountInputDiv.appendChild(otherAmountInput)
     donationForm.appendChild(otherAmountInputDiv)
 
+    var missingAmountMsg = document.createElement('p')
+    missingAmountMsg.id = 'missing-error-msg-amount' + widgetDiv.dataset.slug
+    missingAmountMsg.className = 'missing-error-msg'
+    missingAmountMsg.innerText = 'Amount should be minimum €4'
+    donationForm.appendChild(missingAmountMsg)
+
     var donorInfoDiv = document.createElement('div')
     donorInfoDiv.id = 'donor-info-div' + widgetDiv.dataset.slug
     donorInfoDiv.className = 'donor-info-div'
@@ -1178,6 +1261,13 @@ function designWidget(option) {
     firstNameInput.className = 'first-name-field'
     donorInfoDiv.appendChild(firstNameInput)
 
+    var missingFirstNameMsg = document.createElement('p')
+    missingFirstNameMsg.id =
+      'missing-error-msg-first-name' + widgetDiv.dataset.slug
+    missingFirstNameMsg.className = 'missing-error-msg'
+    missingFirstNameMsg.innerText = 'Please enter your first name'
+    donorInfoDiv.appendChild(missingFirstNameMsg)
+
     var lastNameInput = document.createElement('input')
     lastNameInput.setAttribute('type', 'text')
     lastNameInput.placeholder = 'Last name'
@@ -1185,12 +1275,25 @@ function designWidget(option) {
     lastNameInput.className = 'last-name-field'
     donorInfoDiv.appendChild(lastNameInput)
 
+    var missingLastNameMsg = document.createElement('p')
+    missingLastNameMsg.id =
+      'missing-error-msg-last-name' + widgetDiv.dataset.slug
+    missingLastNameMsg.className = 'missing-error-msg'
+    missingLastNameMsg.innerText = 'Please enter your last name'
+    donorInfoDiv.appendChild(missingLastNameMsg)
+
     var emailInput = document.createElement('input')
     emailInput.setAttribute('type', 'text')
     emailInput.placeholder = 'Email'
     emailInput.id = 'email-field' + widgetDiv.dataset.slug
     emailInput.className = 'email-field'
     donorInfoDiv.appendChild(emailInput)
+
+    var missingEmailMsg = document.createElement('p')
+    missingEmailMsg.id = 'missing-error-msg-email' + widgetDiv.dataset.slug
+    missingEmailMsg.className = 'missing-error-msg'
+    missingEmailMsg.innerText = 'Please enter your email address'
+    donorInfoDiv.appendChild(missingEmailMsg)
 
     // ----------- copied from here -----------------------
 
@@ -1714,13 +1817,17 @@ function createModal(slug) {
   firstAmount.style.width = '60px'
   firstAmount.style.borderRadius = '5px'
   firstAmount.style.border = '1px black solid'
+  firstAmount.style.backgroundColor = 'green'
+  firstAmount.style.color = 'white'
 
   var firstAmountRadio = document.createElement('input')
   firstAmountRadio.setAttribute('type', 'radio')
   firstAmountRadio.id = 'first-amount' + slug
   firstAmountRadio.name = 'select-amount'
   firstAmountRadio.value = '25'
+  firstAmountRadio.checked = true
   firstAmountRadio.style.marginTop = '15px'
+
   // firstAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
   var firstAmountLabel = document.createElement('label')
@@ -1892,7 +1999,7 @@ function createModal(slug) {
   var missingAmountMsg = document.createElement('p')
   missingAmountMsg.id = 'missing-error-msg-amount' + slug
   missingAmountMsg.className = 'missing-error-msg'
-  missingAmountMsg.innerText = 'Please select or input an amount'
+  missingAmountMsg.innerText = 'Amount should be minimum €4'
   donationFormDiv.appendChild(missingAmountMsg)
 
   var donorInfoDiv = document.createElement('div')
@@ -1920,6 +2027,12 @@ function createModal(slug) {
   lastNameInput.className = 'last-name-field'
   donorInfoDiv.appendChild(lastNameInput)
 
+  var missingLastnameMsg = document.createElement('p')
+  missingLastnameMsg.id = 'missing-error-msg-last-name' + slug
+  missingLastnameMsg.className = 'missing-error-msg'
+  missingLastnameMsg.innerText = 'Please enter your last name'
+  donorInfoDiv.appendChild(missingLastnameMsg)
+
   var emailInput = document.createElement('input')
   emailInput.setAttribute('type', 'text')
   emailInput.placeholder = 'Email'
@@ -1927,10 +2040,16 @@ function createModal(slug) {
   emailInput.className = 'email-field'
   donorInfoDiv.appendChild(emailInput)
 
+  var missingEmailMsg = document.createElement('p')
+  missingEmailMsg.id = 'missing-error-msg-email' + slug
+  missingEmailMsg.className = 'missing-error-msg'
+  missingEmailMsg.innerText = 'Please enter your email address'
+  donorInfoDiv.appendChild(missingEmailMsg)
+
   var modalDonateButton = document.createElement('button')
   modalDonateButton.id = 'donate-btn-in-modal+' + slug
   modalDonateButton.className = 'donate-btn-in-form'
-  modalDonateButton.innerHTML = 'Donate'
+  modalDonateButton.innerHTML = '<i class="fa"></i> Donate'
   modalDonateButton.onclick = () => this.directDonate(modalDonateButton.id)
   donationFormDiv.appendChild(modalDonateButton)
 
@@ -2001,10 +2120,28 @@ function directDonate(idValue) {
 
   var fundrasier_id = ''
   var periodIntervals = ''
-  var selectedAmount = ''
+  var selectedAmount = 25
   var firstName = ''
   var lastName = ''
   var email = ''
+  var errorCheck = false
+
+  var amountErrMsg = document.getElementById(
+    'missing-error-msg-amount' + slugVal,
+  )
+  var firstNameErrMsg = document.getElementById(
+    'missing-error-msg-first-name' + slugVal,
+  )
+  var lastNameErrMsg = document.getElementById(
+    'missing-error-msg-last-name' + slugVal,
+  )
+  var emailErrMsg = document.getElementById('missing-error-msg-email' + slugVal)
+
+  amountErrMsg.style.display = 'none'
+  firstNameErrMsg.style.display = 'none'
+  lastNameErrMsg.style.display = 'none'
+  emailErrMsg.style.display = 'none'
+  amountErrMsg.innerText = 'Amount should be minimum €4'
 
   fundrasier_id = document
     .getElementById('fundraiser-id-label' + slugVal)
@@ -2022,51 +2159,90 @@ function directDonate(idValue) {
   }
 
   if (document.getElementById('first-amount' + slugVal).checked) {
-    selectedAmount = document.getElementById('first-amount' + slugVal).value
-  } else if (document.getElementById('second-amount' + slugVal).checked) {
-    selectedAmount = document.getElementById('second-amount' + slugVal).value
-  } else if (document.getElementById('third-amount' + slugVal).checked) {
-    selectedAmount = document.getElementById('third-amount' + slugVal).value
-  } else if (document.getElementById('forth-amount' + slugVal).checked) {
-    selectedAmount = document.getElementById('forth-amount' + slugVal).value
-  } else {
-    selectedAmount = document.getElementById('other-amount-input' + slugVal)
-      .value
+    selectedAmount = 25
+  }
+  if (document.getElementById('second-amount' + slugVal).checked) {
+    selectedAmount = 50
+  }
+  if (document.getElementById('third-amount' + slugVal).checked) {
+    selectedAmount = 75
+  }
+  if (document.getElementById('forth-amount' + slugVal).checked) {
+    selectedAmount = 100
+  }
+  if (document.getElementById('other-amount' + slugVal).checked) {
+    selectedAmount = parseInt(
+      document.getElementById('other-amount-input' + slugVal).value,
+    )
+
+    if (isNaN(selectedAmount)) {
+      amountErrMsg.innerText = 'Amount should be a number'
+    }
   }
 
   firstName = document.getElementById('first-name-field' + slugVal).value
   lastName = document.getElementById('last-name-field' + slugVal).value
   email = document.getElementById('email-field' + slugVal).value
 
-  console.log('fundraiser local id ', fundrasier_id)
-  console.log('period intervals value ', periodIntervals)
-  console.log('selected amount ', selectedAmount)
-  console.log('first name ', firstName)
-  console.log('last name ', lastName)
-  console.log('email ', email)
-
-  var data = {
-    amount: selectedAmount,
-    is_anonymous: true,
-    newsletter: false,
-    pay_period: periodIntervals,
-    fundraising_local_id: fundrasier_id,
-    currency_code: 'eur',
-    lang: 'en',
-    description: 'Hey there, just want to help with donation',
-    bank_account: '',
-    return_url: 'https://www.google.com',
+  if (selectedAmount < 4 || isNaN(selectedAmount)) {
+    console.log('selected amount ', selectedAmount)
+    amountErrMsg.style.display = 'block'
+    errorCheck = true
   }
 
-  makeDonation(data)
+  if (firstName === '') {
+    firstNameErrMsg.style.display = 'block'
+    errorCheck = true
+  }
+
+  if (lastName === '') {
+    lastNameErrMsg.style.display = 'block'
+    errorCheck = true
+  }
+
+  if (email === '') {
+    emailErrMsg.style.display = 'block'
+    errorCheck = true
+  }
+
+  if (errorCheck) {
+    console.log('fix the error')
+  } else {
+    console.log('fundraiser local id ', fundrasier_id)
+    console.log('period intervals value ', periodIntervals)
+    console.log('selected amount ', selectedAmount)
+    console.log('first name ', firstName)
+    console.log('last name ', lastName)
+    console.log('email ', email)
+
+    var data = {
+      amount: selectedAmount,
+      is_anonymous: true,
+      newsletter: false,
+      pay_period: periodIntervals,
+      fundraising_local_id: fundrasier_id,
+      currency_code: 'eur',
+      lang: 'en',
+      description: 'Hey there, just want to help with donation',
+      bank_account: '',
+      return_url: window.location.href,
+    }
+
+    makeDonation(data, slugVal)
+  }
 }
 
-function makeDonation(data) {
+function makeDonation(data, slugVal) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
   const donationApi =
     'https://whydonate-development.appspot.com/api/v1/donation/order/'
 
   const url = proxyurl + donationApi
+
+  var donateBtnInModal = document.getElementById(
+    'donate-btn-in-modal+' + slugVal,
+  )
+  var donateBtn = document.getElementById('donate-btn-in-form+' + slugVal)
 
   console.log('url is ', url)
   jQuery.ajax({
@@ -2075,6 +2251,13 @@ function makeDonation(data) {
     data: data,
     beforeSend: function(xhr) {
       // console.log('before send')
+      if (donateBtn) {
+        donateBtn.innerHTML =
+          '<i class="fa-script fa-circle-o-notch fa-spin"></i> Donate'
+      } else {
+        donateBtnInModal.innerHTML =
+          '<i class="fa-script fa-circle-o-notch fa-spin"></i> Donate'
+      }
     },
     success: function(result) {
       console.log('donation request success response ', result)
@@ -2084,6 +2267,11 @@ function makeDonation(data) {
       console.log('error message ', message)
     },
     complete: function() {
+      if (donateBtn) {
+        donateBtn.innerHTML = 'Donate'
+      } else {
+        donateBtnInModal.innerHTML = 'Donate'
+      }
       // hide loader here
       // console.log('completed block')
       // var modal = document.getElementById(

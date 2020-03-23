@@ -9,7 +9,7 @@
 }
 
 .widget-with-form {
-  height: 650px !important;
+  height: 670px !important;
   width: 800px !important;
   margin: 50px;
   border-radius: 15px !important;
@@ -135,6 +135,15 @@
   visibility: hidden;
 }
 
+/* .first-amount-div input:checked,
+.second-amount-div input:checked,
+.third-amount-div input:checked,
+.forth-amount-div input:checked,
+.other-amount-div input:checked {
+  background-color: #089b19;
+  color: white;
+} */
+
 .first-amount-div label,
 .second-amount-div label,
 .third-amount-div label,
@@ -172,7 +181,9 @@
 }
 
 .amount-info-div-only-image {
+  display: flex !important;
   margin-top: 20px;
+  align-items: baseline !important;
 }
 
 .receive-amount {
@@ -420,7 +431,13 @@ button:focus {
   cursor: pointer;
 }
 
+.fa-script {
+  margin-left: -12px;
+  margin-right: 8px;
+}
+
 .missing-error-msg {
+  display: none;
   font-size: 12px !important;
   font-weight: bold !important;
   color: red !important;
@@ -428,24 +445,5 @@ button:focus {
   width: 90% !important;
   margin-top: 10px !important;
   margin-left: 10px !important;
-}
-
-/*loader */
-.loader {
-  display: none;
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  text-align: left !important;
 }
