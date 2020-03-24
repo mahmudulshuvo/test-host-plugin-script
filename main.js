@@ -1,11 +1,17 @@
 console.log('executing javascript')
 
+var randExtension = Math.floor(Math.random() * 1000)
+randExtension = randExtension.toString()
+
 var classArray = document.getElementsByClassName('widget')
 if (classArray.length > 1) {
   var widgetDiv = classArray[classArray.length - 1]
 } else {
   var widgetDiv = classArray[0]
 }
+
+widgetDiv.id = widgetDiv.dataset.slug + '&' + randExtension
+widgetDiv.dataset.slug = widgetDiv.dataset.slug + '&' + randExtension
 
 var donateButton = document.createElement('BUTTON')
 var fundraiserInfo = {}
@@ -14,19 +20,37 @@ var widgetOption = ''
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
 style.href = 'https://codepen.io/mahmudulshuvo/pen/LYVmyYj.css'
+// style.href =
+//   'https://res.cloudinary.com/dxhaja5tz/raw/upload/v1585061761/style_v0gjxw.css'
 // style.href = 'style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
 
-var fontAwesomeCss = document.createElement('link')
-fontAwesomeCss.href =
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
-fontAwesomeCss.type = 'text/css'
-fontAwesomeCss.rel = 'stylesheet'
-head.appendChild(fontAwesomeCss)
-
 enableJQuery()
+
+function css(element, property) {
+  return window.getComputedStyle(element, null).getPropertyValue(property)
+}
+
+function addFontAwesome() {
+  var span = document.createElement('span')
+  span.className = 'fa'
+  span.style.display = 'none'
+  document.body.insertBefore(span, document.body.firstChild)
+
+  if (css(span, 'font-family') !== 'FontAwesome') {
+    // add a local fallback
+    console.log('Font awesome is added')
+    var fontAwesomeCss = document.createElement('link')
+    fontAwesomeCss.href =
+      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+    fontAwesomeCss.type = 'text/css'
+    fontAwesomeCss.rel = 'stylesheet'
+    document.getElementsByTagName('head')[0].appendChild(fontAwesomeCss)
+  }
+  document.body.removeChild(span)
+}
 
 function enableJQuery() {
   console.log('enable jquery function called')
@@ -50,6 +74,7 @@ function enableJQuery() {
     // Do nothing
   }
 
+  addFontAwesome()
   if (window.jQuery) {
     console.log('jquery exists')
     // jQuery(document).ready(function() {
@@ -88,62 +113,72 @@ function enableJQuery() {
           if (result['data']['amount_target'] > 0) {
             targetAmount.innerText = 'of €' + result['data']['amount_target']
           }
-        }
-
-        var date1 = new Date() // current date
-        var date2 = new Date(result['data']['end_date']) // mm/dd/yyyy format
-        var timeDiff = Math.abs(date2.getTime() - date1.getTime()) // in miliseconds
-        var timeDiffInDays = Math.ceil(timeDiff / 1000 / 3600 / 24) // in second
-        var remainDaysLabel = document.getElementById(
-          'remaining-days' + widgetDiv.dataset.slug,
-        )
-
-        if (timeDiffInDays <= 0) {
-          remainDaysLabel.innerText = 'closed'
-          var donateBtn = document.getElementById(
-            'donate-btn' + widgetDiv.dataset.slug,
+          var date1 = new Date() // current date
+          var date2 = new Date(result['data']['end_date']) // mm/dd/yyyy format
+          var timeDiff = Math.abs(date2.getTime() - date1.getTime()) // in miliseconds
+          var timeDiffInDays = Math.ceil(timeDiff / 1000 / 3600 / 24) // in second
+          var remainDaysLabel = document.getElementById(
+            'remaining-days' + widgetDiv.dataset.slug,
           )
-          donateBtn.disabled = true
-          donateBtn.style.backgroundColor = 'gray'
-        } else if (timeDiffInDays > 1000) {
-          remainDaysLabel.innerText = ''
-        } else {
-          remainDaysLabel.innerText = timeDiffInDays + ' day(s) left'
-        }
 
-        if (result['data']['amount_target'] === 0) {
-          var progressDiv = document.getElementById(
-            'progress-div' + widgetDiv.dataset.slug,
-          )
-          progressDiv.style.display = 'none'
-        } else {
-          var progressDiv = document.getElementById(
-            'progress-div' + widgetDiv.dataset.slug,
-          )
-          progressDiv.style.display = 'block'
-          var progress = Number(
-            (result['data']['donation']['amount'] /
-              result['data']['amount_target']) *
-              100,
-          ).toFixed(2)
-
-          if (progress > 100) {
-            progress = 100
-            var raisedBar = document.getElementById(
-              'raised-bar' + widgetDiv.dataset.slug,
+          if (timeDiffInDays <= 0) {
+            remainDaysLabel.innerText = 'closed'
+            var donateBtn = document.getElementById(
+              'donate-btn' + widgetDiv.dataset.slug,
             )
-            raisedBar.style.width = '100%'
+            donateBtn.disabled = true
+            donateBtn.style.backgroundColor = 'gray'
+          } else if (timeDiffInDays > 1000) {
+            remainDaysLabel.innerText = ''
           } else {
-            raisedBar = document.getElementById(
-              'raised-bar' + widgetDiv.dataset.slug,
-            )
-            raisedBar.style.width = progress.toString() + '%'
+            remainDaysLabel.innerText = timeDiffInDays + ' day(s) left'
           }
 
-          var raisedLabel = document.getElementById(
-            'raised-label' + widgetDiv.dataset.slug,
+          if (result['data']['amount_target'] === 0) {
+            var progressDiv = document.getElementById(
+              'progress-div' + widgetDiv.dataset.slug,
+            )
+            progressDiv.style.display = 'none'
+          } else {
+            var progressDiv = document.getElementById(
+              'progress-div' + widgetDiv.dataset.slug,
+            )
+            progressDiv.style.display = 'flex'
+            var progress = Number(
+              (result['data']['donation']['amount'] /
+                result['data']['amount_target']) *
+                100,
+            ).toFixed(2)
+
+            if (progress > 100) {
+              progress = 100
+              var raisedBar = document.getElementById(
+                'raised-bar' + widgetDiv.dataset.slug,
+              )
+              raisedBar.style.width = '100%'
+            } else {
+              raisedBar = document.getElementById(
+                'raised-bar' + widgetDiv.dataset.slug,
+              )
+              raisedBar.style.width = progress.toString() + '%'
+            }
+
+            var raisedLabel = document.getElementById(
+              'raised-label' + widgetDiv.dataset.slug,
+            )
+            raisedLabel.innerText = progress + '% funded'
+          }
+        } else {
+          var fundraiserInfoDiv = document.getElementById(
+            'fundraiser-info-div' + widgetDiv.dataset.slug,
           )
-          raisedLabel.innerText = progress + '% funded'
+          if (fundraiserInfoDiv) {
+            var motherDiv = document.getElementById(widgetDiv.dataset.slug)
+            motherDiv.removeChild(motherDiv.lastChild)
+            motherDiv.style.width = '400px'
+
+            motherDiv.firstChild.style.width = '420px'
+          }
         }
       },
       error: function(message) {
@@ -208,62 +243,72 @@ function addJquery() {
           if (result['data']['amount_target'] > 0) {
             targetAmount.innerText = 'of €' + result['data']['amount_target']
           }
-        }
-
-        var date1 = new Date() // current date
-        var date2 = new Date(result['data']['end_date']) // mm/dd/yyyy format
-        var timeDiff = Math.abs(date2.getTime() - date1.getTime()) // in miliseconds
-        var timeDiffInDays = Math.ceil(timeDiff / 1000 / 3600 / 24) // in second
-        var remainDaysLabel = document.getElementById(
-          'remaining-days' + widgetDiv.dataset.slug,
-        )
-
-        if (timeDiffInDays <= 0) {
-          remainDaysLabel.innerText = 'closed'
-          var donateBtn = document.getElementById(
-            'donate-btn' + widgetDiv.dataset.slug,
+          var date1 = new Date() // current date
+          var date2 = new Date(result['data']['end_date']) // mm/dd/yyyy format
+          var timeDiff = Math.abs(date2.getTime() - date1.getTime()) // in miliseconds
+          var timeDiffInDays = Math.ceil(timeDiff / 1000 / 3600 / 24) // in second
+          var remainDaysLabel = document.getElementById(
+            'remaining-days' + widgetDiv.dataset.slug,
           )
-          donateBtn.disabled = true
-          donateBtn.style.backgroundColor = 'gray'
-        } else if (timeDiffInDays > 1000) {
-          remainDaysLabel.innerText = ''
-        } else {
-          remainDaysLabel.innerText = timeDiffInDays + ' day(s) left'
-        }
 
-        if (result['data']['amount_target'] === 0) {
-          var progressDiv = document.getElementById(
-            'progress-bar' + widgetDiv.dataset.slug,
-          )
-          progressDiv.style.display = 'none'
-        } else {
-          var progressDiv = document.getElementById(
-            'progress-bar' + widgetDiv.dataset.slug,
-          )
-          progressDiv.style.display = 'block'
-          var progress = Number(
-            (result['data']['donation']['amount'] /
-              result['data']['amount_target']) *
-              100,
-          ).toFixed(2)
-
-          if (progress > 100) {
-            progress = 100
-            var raisedBar = document.getElementById(
-              'raised-bar' + widgetDiv.dataset.slug,
+          if (timeDiffInDays <= 0) {
+            remainDaysLabel.innerText = 'closed'
+            var donateBtn = document.getElementById(
+              'donate-btn' + widgetDiv.dataset.slug,
             )
-            raisedBar.style.width = '100%'
+            donateBtn.disabled = true
+            donateBtn.style.backgroundColor = 'gray'
+          } else if (timeDiffInDays > 1000) {
+            remainDaysLabel.innerText = ''
           } else {
-            raisedBar = document.getElementById(
-              'raised-bar' + widgetDiv.dataset.slug,
-            )
-            raisedBar.style.width = progress.toString() + '%'
+            remainDaysLabel.innerText = timeDiffInDays + ' day(s) left'
           }
 
-          var raisedLabel = document.getElementById(
-            'raised-label' + widgetDiv.dataset.slug,
+          if (result['data']['amount_target'] === 0) {
+            var progressDiv = document.getElementById(
+              'progress-div' + widgetDiv.dataset.slug,
+            )
+            progressDiv.style.display = 'none'
+          } else {
+            var progressDiv = document.getElementById(
+              'progress-div' + widgetDiv.dataset.slug,
+            )
+            progressDiv.style.display = 'flex'
+            var progress = Number(
+              (result['data']['donation']['amount'] /
+                result['data']['amount_target']) *
+                100,
+            ).toFixed(2)
+
+            if (progress > 100) {
+              progress = 100
+              var raisedBar = document.getElementById(
+                'raised-bar' + widgetDiv.dataset.slug,
+              )
+              raisedBar.style.width = '100%'
+            } else {
+              raisedBar = document.getElementById(
+                'raised-bar' + widgetDiv.dataset.slug,
+              )
+              raisedBar.style.width = progress.toString() + '%'
+            }
+
+            var raisedLabel = document.getElementById(
+              'raised-label' + widgetDiv.dataset.slug,
+            )
+            raisedLabel.innerText = progress + '% funded'
+          }
+        } else {
+          var fundraiserInfoDiv = document.getElementById(
+            'fundraiser-info-div' + widgetDiv.dataset.slug,
           )
-          raisedLabel.innerText = progress + '% funded'
+          if (fundraiserInfoDiv) {
+            var motherDiv = document.getElementById(widgetDiv.dataset.slug)
+            motherDiv.removeChild(motherDiv.lastChild)
+            motherDiv.style.width = '400px'
+
+            motherDiv.firstChild.style.width = '100%'
+          }
         }
       },
       error: function(message) {
@@ -329,7 +374,7 @@ function designWidget(option) {
     progressBar.appendChild(raisedBar)
 
     var progressDiv = document.createElement('DIV')
-    progressDiv.id = 'prgoress-div' + widgetDiv.dataset.slug
+    progressDiv.id = 'progress-div' + widgetDiv.dataset.slug
     progressDiv.className = 'progress-div'
     widgetDiv.appendChild(progressDiv)
 
@@ -782,10 +827,28 @@ function designWidget(option) {
     donateBtnDiv.id = 'donate-btn-in-form-div+' + widgetDiv.dataset.slug
     donateButton.id = 'donate-btn-in-form+' + widgetDiv.dataset.slug
     donateButton.className = 'donate-btn-in-form'
-    donateButton.innerHTML = 'Donate'
+    donateButton.innerHTML = '<i class="fa"></i> Donate'
     donateButton.onclick = () => this.directDonate(donateBtnDiv.id)
     donateBtnDiv.appendChild(donateButton)
     donationForm.appendChild(donateBtnDiv)
+
+    var poweredByDiv = document.createElement('div')
+    poweredByDiv.id = 'powered-by-div+' + widgetDiv.dataset.slug
+    poweredByDiv.className = 'powered-by-div'
+    donationForm.appendChild(poweredByDiv)
+
+    var poweredByLabel = document.createElement('label')
+    poweredByLabel.id = 'powered-by-label+' + widgetDiv.dataset.slug
+    poweredByLabel.className = 'powered-by-label'
+    poweredByLabel.textContent = 'Powered by '
+    poweredByDiv.appendChild(poweredByLabel)
+
+    var whydonateLogo = document.createElement('img')
+    whydonateLogo.id = 'whydonate-logo+' + widgetDiv.dataset.slug
+    whydonateLogo.className = 'whydonate-logo'
+    whydonateLogo.src =
+      'https://www.whydonate.nl/wp-content/uploads/2020/03/logo_whydonate.svg'
+    poweredByDiv.appendChild(whydonateLogo)
 
     // create right side
     var fundraiserInfoDiv = document.createElement('DIV')
@@ -1301,10 +1364,28 @@ function designWidget(option) {
     donateBtnDiv.id = 'donate-btn-in-form-div+' + widgetDiv.dataset.slug
     donateButton.id = 'donate-btn-in-form+' + widgetDiv.dataset.slug
     donateButton.className = 'donate-btn-in-form'
-    donateButton.innerHTML = 'Donate'
+    donateButton.innerHTML = '<i class="fa"></i> Donate'
     donateButton.onclick = () => this.directDonate(donateBtnDiv.id)
     donateBtnDiv.appendChild(donateButton)
     donationForm.appendChild(donateBtnDiv)
+
+    var poweredByDiv = document.createElement('div')
+    poweredByDiv.id = 'powered-by-div+' + widgetDiv.dataset.slug
+    poweredByDiv.className = 'powered-by-div'
+    donationForm.appendChild(poweredByDiv)
+
+    var poweredByLabel = document.createElement('label')
+    poweredByLabel.id = 'powered-by-label+' + widgetDiv.dataset.slug
+    poweredByLabel.className = 'powered-by-label'
+    poweredByLabel.textContent = 'Powered by '
+    poweredByDiv.appendChild(poweredByLabel)
+
+    var whydonateLogo = document.createElement('img')
+    whydonateLogo.id = 'whydonate-logo+' + widgetDiv.dataset.slug
+    whydonateLogo.className = 'whydonate-logo'
+    whydonateLogo.src =
+      'https://www.whydonate.nl/wp-content/uploads/2020/03/logo_whydonate.svg'
+    poweredByDiv.appendChild(whydonateLogo)
 
     // create right side
     var fundraiserInfoDiv = document.createElement('DIV')
@@ -2053,6 +2134,24 @@ function createModal(slug) {
   modalDonateButton.onclick = () => this.directDonate(modalDonateButton.id)
   donationFormDiv.appendChild(modalDonateButton)
 
+  var poweredByDiv = document.createElement('div')
+  poweredByDiv.id = 'powered-by-div+' + widgetDiv.dataset.slug
+  poweredByDiv.className = 'powered-by-div'
+  donationFormDiv.appendChild(poweredByDiv)
+
+  var poweredByLabel = document.createElement('label')
+  poweredByLabel.id = 'powered-by-label+' + widgetDiv.dataset.slug
+  poweredByLabel.className = 'powered-by-label'
+  poweredByLabel.textContent = 'Powered by '
+  poweredByDiv.appendChild(poweredByLabel)
+
+  var whydonateLogo = document.createElement('img')
+  whydonateLogo.id = 'whydonate-logo+' + widgetDiv.dataset.slug
+  whydonateLogo.className = 'whydonate-logo'
+  whydonateLogo.src =
+    'https://www.whydonate.nl/wp-content/uploads/2020/03/logo_whydonate.svg'
+  poweredByDiv.appendChild(whydonateLogo)
+
   document.body.appendChild(modalDiv)
 
   // Design donate Form
@@ -2200,7 +2299,7 @@ function directDonate(idValue) {
     errorCheck = true
   }
 
-  if (email === '') {
+  if (email === '' || !ValidateEmail(email)) {
     emailErrMsg.style.display = 'block'
     errorCheck = true
   }
@@ -2232,6 +2331,13 @@ function directDonate(idValue) {
   }
 }
 
+function ValidateEmail(mail) {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+    return true
+  }
+  return false
+}
+
 function makeDonation(data, slugVal) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
   const donationApi =
@@ -2253,10 +2359,10 @@ function makeDonation(data, slugVal) {
       // console.log('before send')
       if (donateBtn) {
         donateBtn.innerHTML =
-          '<i class="fa-script fa-circle-o-notch fa-spin"></i> Donate'
+          '<i class="fa fa-circle-o-notch fa-spin"></i> Donate'
       } else {
         donateBtnInModal.innerHTML =
-          '<i class="fa-script fa-circle-o-notch fa-spin"></i> Donate'
+          '<i class="fa fa-circle-o-notch fa-spin"></i> Donate'
       }
     },
     success: function(result) {
@@ -2268,9 +2374,9 @@ function makeDonation(data, slugVal) {
     },
     complete: function() {
       if (donateBtn) {
-        donateBtn.innerHTML = 'Donate'
+        donateBtn.innerHTML = '<i class="fa"></i> Donate'
       } else {
-        donateBtnInModal.innerHTML = 'Donate'
+        donateBtnInModal.innerHTML = '<i class="fa"></i> Donate'
       }
       // hide loader here
       // console.log('completed block')
@@ -2292,74 +2398,3 @@ function makeUrl() {
 
   return proxyurl + url
 }
-
-// function httpGet() {
-//   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-//   const url =
-//     'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=fundraising-by-shuvo' // site that doesn’t send Access-Control-*
-//   fetch(proxyurl + url) // https://cors-anywhere.herokuapp.com/https://example.com
-//     .then(response => response.text())
-//     .then(contents => console.log(contents))
-//     .catch(() =>
-//       console.log('Can’t access ' + url + ' response. Blocked by browser?'),
-//     )
-// }
-
-// var btn = document.createElement('BUTTON') // Create a <button> element
-// btn.innerHTML = 'GET'
-// btn.id = 'btn-request-get'
-// btn.onclick = this.handleGET
-// // widgetDiv.appendChild(btn)
-
-// var btnP = document.createElement('BUTTON') // Create a <button> element
-// btnP.innerHTML = 'POST'
-// btnP.id = 'btn-request-post'
-// btnP.onclick = this.handlePOST
-// // widgetDiv.appendChild(btnP)
-
-// var btnC = document.createElement('BUTTON') // Create a <button> element
-// btnC.innerHTML = 'Check'
-// btnC.id = 'btn-request'
-
-// function httpPost() {
-//   data = {
-//     amount: 25,
-//     is_anonymous: '',
-//     newsletter: false,
-//     pay_period: 'once',
-//     fundraising_local_id: 419,
-//     currency_code: 'eur',
-//     lang: 'en',
-//     description: 'Fundraising by Shuvo',
-//     bank_account: '',
-//     return_url:
-//       'https://whydonate-staging-ui.appspot.com/fundraising/fundraising-by-shuvo/en/',
-//   }
-
-//   let headers = new Headers()
-//   headers.append('Content-Type', 'application/json')
-
-//   //   const proxyurl = 'http://localhost:8080/'
-//   //     const url = 'http://127.0.0.1:8000/api/v1/donation/order/' // site that doesn’t send Access-Control-*
-
-//   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-//   const url = 'https://whydonate-development.appspot.com/api/v1/donation/order/'
-//   fetch(proxyurl + url, {
-//     method: 'POST',
-//     headers: headers,
-//     body: JSON.stringify(data),
-//   }) // https://cors-anywhere.herokuapp.com/https://example.com
-//     .then(response => {
-//       const contentType = response.headers.get('content-type')
-//       if (!contentType || !contentType.includes('application/json')) {
-//         throw new TypeError("Oops, we haven't got JSON!")
-//       }
-//       return response.json()
-//     })
-//     .then(data => {
-//       /* process your data further */
-//       window.location.replace(data.data.url)
-//       //   console.log(data.data.url)
-//     })
-//     .catch(error => console.error(error))
-// }
