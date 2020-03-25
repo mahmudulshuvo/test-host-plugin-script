@@ -19,9 +19,9 @@ var widgetOption = ''
 
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
-style.href = 'https://codepen.io/mahmudulshuvo/pen/LYVmyYj.css'
 // style.href =
-//   'https://res.cloudinary.com/dxhaja5tz/raw/upload/v1585061761/style_v0gjxw.css'
+//   'https://cdn.jsdelivr.net/gh/mahmudulshuvo/test-host-plugin-script/style.css'
+style.href = 'https://codepen.io/mahmudulshuvo/pen/LYVmyYj.css'
 // style.href = 'style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
@@ -55,7 +55,6 @@ function addFontAwesome() {
 function enableJQuery() {
   console.log('enable jquery function called')
   widgetOption = widgetDiv.getAttribute('value')
-  console.log('widget option ', widgetOption)
   var slug = widgetDiv.dataset.slug
   if (widgetOption === 'show-with-image') {
     console.log('widget option = ', widgetOption)
@@ -81,6 +80,7 @@ function enableJQuery() {
     // console.log(widgetDiv.dataset.message)
     var url = makeUrl()
     console.log('url is ', url)
+    console.log('--------------- start execution---------------')
     jQuery.ajax({
       url: url,
       async: false,
@@ -89,6 +89,13 @@ function enableJQuery() {
       },
       success: function(result) {
         console.log('response ', result)
+
+        var progressDivCheck = document.getElementById(
+          'progress-bar' + widgetDiv.dataset.slug,
+        )
+        if (progressDivCheck) {
+          progressDivCheck.style.visibility = 'visible'
+        }
 
         fundraiserInfo = result['data']
 
@@ -179,20 +186,21 @@ function enableJQuery() {
 
             motherDiv.firstChild.style.width = '420px'
           }
+
+          var progressDivCheck = document.getElementById(
+            'progress-bar' + widgetDiv.dataset.slug,
+          )
+          if (progressDivCheck) {
+            progressDivCheck.style.visibility = 'hidden'
+          }
         }
       },
       error: function(message) {
         console.log('error message ', message)
       },
-      complete: function() {
-        // hide loader here
-        // console.log('completed block')
-        // var modal = document.getElementById(
-        //   'myModal' + widgetDiv.dataset.slug,
-        // )
-        // modal.style.display = 'none'
-      },
+      complete: function() {},
     })
+    console.log('--------------- end execution---------------')
     // })
   } else {
     console.log('jquery does not exists')
@@ -205,14 +213,9 @@ function addJquery() {
   script.src = 'https://code.jquery.com/jquery-1.7.2.js'
   script.type = 'text/javascript'
   script.onload = function() {
-    // your jQuery code here
-    // jQuery(document).ready(function() {
-    // console.log(widgetDiv.dataset.message)
-    // if (typeof jQuery.easing[jQuery.easing.def] == 'function') {
-    //   return jQuery.easing[jQuery.easing.def](x, t, b, c, d)
-    // }
     var url = makeUrl()
     console.log('url is ', url)
+    console.log('--------------- start execution---------------')
     jQuery.ajax({
       url: url,
       async: false,
@@ -221,6 +224,12 @@ function addJquery() {
       },
       success: function(result) {
         console.log('response ', result)
+        var progressDivCheck = document.getElementById(
+          'progress-bar' + widgetDiv.dataset.slug,
+        )
+        if (progressDivCheck) {
+          progressDivCheck.style.visibility = 'visible'
+        }
 
         setModalId(result['data']['id'], widgetDiv.dataset.slug)
 
@@ -309,6 +318,13 @@ function addJquery() {
 
             motherDiv.firstChild.style.width = '100%'
           }
+
+          var progressDivCheck = document.getElementById(
+            'progress-bar' + widgetDiv.dataset.slug,
+          )
+          if (progressDivCheck) {
+            progressDivCheck.style.visibility = 'hidden'
+          }
         }
       },
       error: function(message) {
@@ -316,13 +332,9 @@ function addJquery() {
       },
       complete: function() {
         // hide loader here
-        // console.log('completed block')
-        // var modal = document.getElementById(
-        //   'myModal' + widgetDiv.dataset.slug,
-        // )
-        // modal.style.display = 'none'
       },
     })
+    console.log('--------------- end execution---------------')
     // })
     // console.log(widgetDiv.dataset.message)
   }
